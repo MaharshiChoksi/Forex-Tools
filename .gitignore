@@ -1,0 +1,7 @@
+.logs
+*.logs
+.env
+Template.txt
+.vscode
+.idea
+.streamlit
