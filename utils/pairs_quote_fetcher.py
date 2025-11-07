@@ -54,7 +54,7 @@ def fetch_quotes() -> pd.DataFrame:
         Forex = {key: value for key, value in fx_data}
 
     if(Forex or Commodity):
-        Quotes = {key: Forex[key] + Commodity[key] for key in Forex}
+        Quotes = Forex.update(Commodity)
         df = pd.DataFrame(Quotes)
         if(df.notnull or df != "None"):
             return df
