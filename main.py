@@ -1,6 +1,7 @@
 import base64
 from pathlib import Path
 import streamlit as st
+from utils.pairs_quote_fetcher import scrape_url, fetch_quotes
 
 st.set_page_config(page_title="Forex Tools", layout="wide")
 
@@ -9,6 +10,7 @@ def _get_base64_of_bin_file(bin_file_path: Path) -> str:
     with open(bin_file_path, "rb") as f:
         data = f.read()
     return base64.b64encode(data).decode()
+
 
 def set_background(local_img_path: Path):
     if not local_img_path.exists():

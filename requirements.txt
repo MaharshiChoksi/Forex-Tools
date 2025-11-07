@@ -1,4 +1,5 @@
+urllib
+bs4
 streamlit
-requests
 pandas
 numpy
