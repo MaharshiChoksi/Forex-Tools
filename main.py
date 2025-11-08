@@ -1,13 +1,14 @@
 import streamlit as st
 import base64
 from pathlib import Path
+import pandas as pd
 from utils.pairs_quote_fetcher import fetch_quotes
 
-from pages.margin_calc import show_margin
-from pages.pos_size_calc import show_posSize
-from pages.pnl_calc import show_pnl
-from pages.pip_size_calc import show_pipSize
-from pages.pip_value_calc import show_pipValue
+from tabs.margin_calc import show_margin
+from tabs.pos_size_calc import show_posSize
+from tabs.pnl_calc import show_pnl
+from tabs.pip_size_calc import show_pipSize
+from tabs.pip_value_calc import show_pipValue
 
 st.set_page_config(page_title="Forex Tools", layout="wide")
 
@@ -44,35 +45,27 @@ def set_background(local_img_path: Path):
 assets_bg = Path(__file__).parents[0] / "assets" / "background.jpg"
 set_background(assets_bg)
 
+# Create a placeholder for tabs
+tab_placeholder = st.empty()
+
+data = pd.DataFrame()
 with st.spinner("Fetching Pairs and Quotes..."):
-   data = fetch_quotes()
+    data = fetch_quotes()
 
-# Initialize session state to track the selected page
-if 'selected_page' not in st.session_state:
-    st.session_state.selected_page = "Margin Calculator"  # Default pag
+if(data.isnull().all().any() or data is None or data.empty):
+    tab_placeholder.error("!!! Error while fetching Quotes !!!")
+else:
+    with tab_placeholder.container():
+        tab_margin, tab_pos_size, tab_Pnl, tab_pip_size, tab_pip_value = st.tabs(["Margin Calculator", "Position Size Calculator", " PNL Calculator", "Pip Size Calculator", "Pip Value Calculator"])
 
-st.sidebar.title("Tools")
-
-# Sidebar buttons for navigation
-if st.sidebar.button("Margin Calculator"):
-    st.session_state.selected_page = "Margin Calculator"
-if st.sidebar.button("Position Size Calculator"):
-    st.session_state.selected_page = "Position Size Calculator"
-if st.sidebar.button("PNL Calculator"):
-    st.session_state.selected_page = "PNL Calculator"
-if st.sidebar.button("Pip Size Calculator"):
-    st.session_state.selected_page = "Pip Size Calculator"
-if st.sidebar.button("Pip Value Calculator"):
-    st.session_state.selected_page = "Pip Value Calculator"
-
-# Display the selected page
-if st.session_state.selected_page == "Margin Calculator":
-    show_margin()
-elif st.session_state.selected_page == "Position Size Calculator":
-    show_posSize()
-elif st.session_state.selected_page == "PNL Calculator":
-    show_pnl()
-elif st.session_state.selected_page == "Pip Size Calculator":
-    show_pipSize()
-elif st.session_state.selected_page == "Pip Value Calculator":
-    show_pipValue()
+        # Sidebar buttons for navigation
+        with tab_margin:
+            show_margin(data)
+        with tab_pos_size:
+            show_posSize(data)
+        with tab_Pnl:
+            show_pnl(data)
+        with tab_pip_size:
+            show_pipSize(data)
+        with tab_pip_value:
+            show_pipValue(data)

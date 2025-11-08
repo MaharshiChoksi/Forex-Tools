@@ -1,60 +1,50 @@
-from urllib.request import Request, urlopen
-from bs4 import BeautifulSoup
+import requests
 import pandas as pd
 import streamlit as st
 
-quote_forex_url = r"https://www.centralcharts.com/en/price-list-ranking/ALL/asc/ts_48-forex-128-currency-pairs--qc_1-alphabetical-order?p="
-quote_commodity_url = r"https://www.centralcharts.com/en/price-list-ranking/ALL/asc/ts_529-gold-silver-coins--qc_1-alphabetical-order?p="
-pages_limit = 5
-
-def scrape_url(url):
+def scrape_pairs():
     try:
-        rows_data = []
-        for i in range(1, pages_limit + 1):
-            # Fetch Web content
-            req = Request(url=url+str(i), headers={'User-Agent': 'Mozilla/5.0'})
-            res = urlopen(req).read()
-            # Parse HTML
-            soup = BeautifulSoup(res, 'html.parser')
-            # Get table
-            try:
-                table = soup.find_all('article')[0].find(class_="tabMini-wrapper").find('table')
-                if table:
-                    tbody = table.find('tbody')
-                    if tbody:
-                        for tr in tbody.find_all('tr'):
-                            row = []
-                            for td in tr.find_all('td')[:2]:
-                                row.append(td.get_text(strip=True))
-                            rows_data.append(row)
-                else:
-                    break
-            except Exception as e:
-                break
-        # print("Final Rows Data:", rows_data)  # Print after all processing
-        return rows_data
+        pairs = {"Pair": ['EURUSD', 'USDJPY', 'GBPUSD', 'USDCHF', 'AUDUSD', 'USDCAD', 'NZDUSD',
+                 'EURGBP', 'EURAUD', 'GBPJPY', 'GBPCAD', 'AUDNZD', 'EURCHF', 'CHFJPY', 'EURBRL',
+                 'EURMXN', 'GBPBRL', 'GBPMXN', 'USDSGD', 'USDHKD', 'EURTRY', 'GBPTHB', 'AUDSGD',
+                 'USDZAR', 'USDILS', 'USDBRL', 'USDMXN', 'EURJPY', 'AUDJPY', 'AUDCHF', 'NZDJPY', 
+                 'AUDBRL', 'AUDMXN', 'CHFBRL', 'CHFMXN', 'GBPAUD', 'GBPNZD', 'XAUUSD', 'XAGUSD'
+                ]}
+        df = pd.DataFrame(pairs)
+        return df
     except Exception as e:
-        print("Error Occurred While Fetching Quotes")
+        print(f"Error Occurred While Fetching Quotes: {e}")
         return
 
-@st.cache_data(ttl=3600)
-def fetch_quotes() -> pd.DataFrame:
-    Commodity = dict()
-    Forex = dict()
-    # Commodity
-    comm_data = scrape_url(quote_commodity_url)
-    if isinstance(comm_data, list):
-        for i in comm_data:
-            if 'ounce silver usd' in i[0].lower() or 'ounce gold usd' in i[0].lower():
-                Commodity[i[0].split('(')[1].split(')')[0]] = i[1]
-    
-    # Forex
-    fx_data = scrape_url(quote_forex_url)
-    if isinstance(fx_data, list):
-        Forex = {key: value for key, value in fx_data}
+def scrape_quotes(pairs: pd.DataFrame):
+    try:
+        final_df = pd.DataFrame(columns=["Pair", "Quote"])
+        for _sym in pairs['Pair']:
+            # Fetch Web content
+            quote_url = f"https://financialmodelingprep.com/stable/quote-short?symbol={_sym}&apikey={st.secrets.get("API_KEY")}"
+            res = requests.get(url=quote_url)
+            if res.status_code == 200:
+                # Parse HTML
+                data = res.json()
+                for item in data:
+                    temp_df = pd.DataFrame([{"Pair": item['symbol'], "Quote": item['price']}])
+                    final_df = pd.concat([final_df, temp_df], ignore_index=True)
+        final_df.drop(columns=['index'], inplace=True)
+        final_df.reset_index(drop=True, inplace=True)
+        return final_df
+    except Exception as e:
+        print(f"Error Occurred While Fetching Quotes: {e}")
+        return
 
-    if(Forex or Commodity):
-        Quotes = Forex.update(Commodity)
-        df = pd.DataFrame(Quotes)
-        if(df.notnull or df != "None"):
-            return df
+@st.cache_data(ttl=21600)
+def fetch_quotes() -> pd.DataFrame:
+    # Pairs
+    pairs = scrape_pairs()
+    if not isinstance(pairs, pd.DataFrame):
+        return pd.DataFrame()
+    
+    # Quotes & Pairs
+    final_pairs_quotes = scrape_quotes(pairs)
+    if not isinstance(final_pairs_quotes, pd.DataFrame):
+        return pd.DataFrame()
+    return final_pairs_quotes
