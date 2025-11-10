@@ -56,16 +56,20 @@ if(data.isnull().all().any() or data is None or data.empty):
     tab_placeholder.error("!!! Error while fetching Quotes !!!")
 else:
     with tab_placeholder.container():
-        tab_margin, tab_pos_size, tab_Pnl, tab_pip_size, tab_pip_value = st.tabs(["Margin Calculator", "Position Size Calculator", " PNL Calculator", "Pip Size Calculator", "Pip Value Calculator"])
+        tab_names = ["Margin Calculator", "Position Size Calculator", "PNL Calculator", "Pip Size Calculator", "Pip Value Calculator"]
 
-        # Sidebar buttons for navigation
-        with tab_margin:
+        # Use radio for persistent tab selection
+        if "selected_tab" not in st.session_state:
+            st.session_state.selected_tab = tab_names[0]
+        
+        selected_tab = st.radio("Go to Calculator:", tab_names, index=tab_names.index(st.session_state.selected_tab))
+        if selected_tab == "Margin Calculator":
             show_margin(data)
-        with tab_pos_size:
+        elif selected_tab == "Position Size Calculator":
             show_posSize(data)
-        with tab_Pnl:
+        elif selected_tab == "PNL Calculator":
             show_pnl(data)
-        with tab_pip_size:
+        elif selected_tab == "Pip Size Calculator":
             show_pipSize(data)
-        with tab_pip_value:
+        elif selected_tab == "Pip Value Calculator":
             show_pipValue(data)

@@ -4,8 +4,7 @@ import pandas as pd
 def show_margin(data: pd.DataFrame):
   st.title("Margin Calculator")
 
-  with st.form(key="margin_form"):
-    st.write("Enter values for calculation: ")
+  with st.form(key="margin_form", border=True, width="stretch", height="stretch"):
 
     # Input Fields
     # ====> 1). Pair
@@ -36,12 +35,11 @@ def show_margin(data: pd.DataFrame):
       if value is not None:
         _QuoteWithAccCurrency = value
       st.write(f"{_pairWithAccCurrency}: {_QuoteWithAccCurrency}")
-
-    # If quote not account currency
-    # else:
-    #   value = data.loc[data['Pairs'] == _pairInput, 'Quotes'].iloc[0]
-    #   if value is not None:
-    #     _QuoteWithAccCurrency = value
+    # If quote account currency
+    else:
+      value = data.loc[data['Pairs'] == _pairInput, 'Quotes'].iloc[0]
+      if value is not None:
+        _QuoteWithAccCurrency = value
     
     res_placeholder = st.empty()
     
