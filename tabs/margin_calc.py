@@ -4,7 +4,7 @@ import pandas as pd
 def show_margin(data: pd.DataFrame):
   st.title("Margin Calculator")
 
-  with st.form(key="margin_form", border=True, width="stretch", height="stretch"):
+  with st.container(border=True, width="stretch", height="stretch", gap="small"):
 
     # Input Fields
     # ====> 1). Pair
@@ -44,7 +44,7 @@ def show_margin(data: pd.DataFrame):
     res_placeholder = st.empty()
     
     # ====> 6). Calculate button
-    submit_button = st.form_submit_button(label='Calculate')
+    submit_button = st.button(label='Calculate')
 
     if submit_button:
      if(_tradeLots == None or _tradeLots == 0):

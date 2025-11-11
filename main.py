@@ -7,7 +7,6 @@ from utils.pairs_quote_fetcher import fetch_quotes
 from tabs.margin_calc import show_margin
 from tabs.pos_size_calc import show_posSize
 from tabs.pnl_calc import show_pnl
-from tabs.pip_size_calc import show_pipSize
 from tabs.pip_value_calc import show_pipValue
 
 st.set_page_config(page_title="Forex Tools", layout="wide")
@@ -56,7 +55,7 @@ if(data.isnull().all().any() or data is None or data.empty):
     tab_placeholder.error("!!! Error while fetching Quotes !!!")
 else:
     with tab_placeholder.container():
-        tab_names = ["Margin Calculator", "Position Size Calculator", "PNL Calculator", "Pip Size Calculator", "Pip Value Calculator"]
+        tab_names = ["Margin Calculator", "Position Size Calculator", "PNL Calculator", "Pip Value Calculator"]
 
         # Use radio for persistent tab selection
         if "selected_tab" not in st.session_state:
@@ -69,7 +68,5 @@ else:
             show_posSize(data)
         elif selected_tab == "PNL Calculator":
             show_pnl(data)
-        elif selected_tab == "Pip Size Calculator":
-            show_pipSize(data)
         elif selected_tab == "Pip Value Calculator":
             show_pipValue(data)

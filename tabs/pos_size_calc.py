@@ -2,14 +2,16 @@ import streamlit as st
 import pandas as pd
 
 def show_posSize(data: pd.DataFrame):
-    st.title("Position Size Calculator")
+  st.title("Position Size Calculator")
+
+  with st.container(border=True, width="stretch", height="stretch", gap="small"):
     # Input Fields
     # ====> 1). Pair
     _pairsList = data["Pairs"].to_list()
     _pairInput = st.selectbox(label="Currency Pair", options=_pairsList, index=0)
-    _currencyPairs = ['USD', 'CHF', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD']
 
     # ====> 2). Account Currency
+    _currencyPairs = ['USD', 'CHF', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD']
     _accCurrInput = st.selectbox(label="Account Currency", options=_currencyPairs, index=0)
 
     # ====> 3). Account Size

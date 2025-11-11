@@ -5,10 +5,15 @@ import streamlit as st
 def scrape_pairs():
     try:
         pairs = {"Pairs": ['EURUSD', 'USDJPY', 'GBPUSD', 'USDCHF', 'AUDUSD', 'USDCAD', 'NZDUSD',
-                 'EURGBP', 'EURAUD', 'GBPJPY', 'GBPCAD', 'AUDNZD', 'EURCHF', 'CHFJPY', 'EURBRL',
-                 'EURMXN', 'GBPBRL', 'GBPMXN', 'USDSGD', 'USDHKD', 'EURTRY', 'GBPTHB', 'AUDSGD',
-                 'USDZAR', 'USDILS', 'USDBRL', 'USDMXN', 'EURJPY', 'AUDJPY', 'AUDCHF', 'NZDJPY', 
-                 'AUDBRL', 'AUDMXN', 'CHFBRL', 'CHFMXN', 'GBPAUD', 'GBPNZD']}
+                'EURGBP', 'EURAUD', 'GBPJPY', 'GBPCAD', 'AUDNZD', 'EURCHF', 'CHFJPY', 'EURBRL',
+                'EURMXN', 'GBPBRL', 'GBPMXN', 'USDSGD', 'USDHKD', 'EURTRY', 'GBPTHB', 'AUDSGD',
+                'USDZAR', 'USDILS', 'USDBRL', 'USDMXN', 'EURJPY', 'AUDJPY', 'AUDCHF', 'NZDJPY', 
+                'AUDBRL', 'AUDMXN', 'CHFBRL', 'CHFMXN', 'GBPAUD', 'GBPNZD','CHFUSD', 'USDEUR', 
+                'GBPCHF', 'CHFEUR', 'EURCAD', 'CADUSD', 'CADCHF', 'CADJPY', 'NZDCAD', 'NZDCHF', 
+                'AUDCAD', 'CADAUD', 'NZDEUR', 'EURNZD', 'NZDAUD', 'JPYGBP', 'JPYCAD', 'JPYNZD',
+                'JPYAUD', 'USDGBP', 'EURNZD', 'CADNZD', 'NZDGBP', 'JPYUSD', 'JPYCHF', 'JPYGBP',
+                'GBPNZD'
+            ]}
         df = pd.DataFrame(pairs)
         return df
     except Exception as e:

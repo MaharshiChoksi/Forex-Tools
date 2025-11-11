@@ -6,10 +6,9 @@ This Python-based project provides a set of calculators that help traders make p
 
 ## Features
 
-- Margin Calculator: Determines the margin required to open and maintain a position based on leverage, position size, and asset price.  
-- Profit and Loss Calculator: Calculates potential profit or loss for open or closed trades based on entry, exit price, and trade direction.  
-- Lot Size Calculator: Determines the appropriate lot size based on risk percentage, stop loss level, and account balance.  
-- Pip Size Calculator: Computes the pip size for both currency pairs and CFDs, adjusting for instrument precision.  
-- Pip Value Calculator: Calculates the monetary value of a pip based on symbol type, lot size, and exchange rate.  
+- Margin Calculator: Determines the margin required to open and maintain a position based on leverage, position size, and asset price.
+- Profit and Loss Calculator: Calculates potential profit or loss for open or closed trades based on entry, exit price, and trade direction.
+- Lot Size Calculator: Determines the appropriate lot size based on risk percentage, stop loss level, and account balance.
+- Pip Value Calculator: Calculates the monetary value of a pip based on symbol type, lot size, and exchange rate.
 
 ---
