@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import streamlit as st
+import time
 
 def scrape_pairs():
     try:
@@ -18,7 +19,7 @@ def scrape_pairs():
         return df
     except Exception as e:
         print(f"Error Occurred While Fetching Quotes: {e}")
-        return e
+        return
 
 def scrape_quotes(pairs: pd.DataFrame):
     try:
@@ -31,6 +32,7 @@ def scrape_quotes(pairs: pd.DataFrame):
             res = yf.Ticker(f"{_sym}=X").info
             if res:
                 temp_dict[_sym] = round(res['regularMarketPrice'], res['priceHint'])
+            time.sleep(1)
 
         final_df = pd.DataFrame(temp_dict.items(), columns=["Pairs", "Quotes"])
         return final_df
