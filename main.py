@@ -49,12 +49,11 @@ tab_placeholder = st.empty()
 
 data = pd.DataFrame()
 with st.spinner("Fetching Pairs and Quotes..."):
-    data = fetch_quotes()
+    try:
+        data = fetch_quotes()
 
-if(data.isnull().all().any() or data is None or data.empty):
-    tab_placeholder.error(f"!!! Error while fetching Quotes !!!: {data}")
-else:
-    with tab_placeholder.container():
+    # if(data.isnull().all().any() or data is None or data.empty):
+      with tab_placeholder.container():
         tab_names = ["Margin Calculator", "Position Size Calculator", "PNL Calculator", "Pip Value Calculator"]
 
         # Use radio for persistent tab selection
@@ -70,3 +69,6 @@ else:
             show_pnl(data)
         elif selected_tab == "Pip Value Calculator":
             show_pipValue(data)
+except Exception as e:
+    tab_placeholder.error(f"!!! Error while fetching Quotes !!!: {data}")
+
