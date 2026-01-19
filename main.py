@@ -52,7 +52,7 @@ with st.spinner("Fetching Pairs and Quotes..."):
     data = fetch_quotes()
 
 if(data.isnull().all().any() or data is None or data.empty):
-    tab_placeholder.error("!!! Error while fetching Quotes !!!")
+    tab_placeholder.error(f"!!! Error while fetching Quotes !!!: {data}")
 else:
     with tab_placeholder.container():
         tab_names = ["Margin Calculator", "Position Size Calculator", "PNL Calculator", "Pip Value Calculator"]
