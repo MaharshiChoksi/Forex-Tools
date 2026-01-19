@@ -69,6 +69,6 @@ with st.spinner("Fetching Pairs and Quotes..."):
             show_pnl(data)
         elif selected_tab == "Pip Value Calculator":
             show_pipValue(data)
-except Exception as e:
-    tab_placeholder.error(f"!!! Error while fetching Quotes !!!: {data}")
+    except Exception as e:
+        tab_placeholder.error(f"!!! Error while fetching Quotes !!!: {data}")
 
