@@ -18,7 +18,7 @@ def scrape_pairs():
         return df
     except Exception as e:
         print(f"Error Occurred While Fetching Quotes: {e}")
-        return
+        return e
 
 def scrape_quotes(pairs: pd.DataFrame):
     try:
@@ -36,17 +36,17 @@ def scrape_quotes(pairs: pd.DataFrame):
         return final_df
     except Exception as e:
         print(f"Error Occurred While Fetching Quotes: {e}")
-        return
+        return e
 
 @st.cache_data(ttl=21600)
 def fetch_quotes() -> pd.DataFrame:
     # Pairs
     pairs = scrape_pairs()
     if not isinstance(pairs, pd.DataFrame):
-        return pd.DataFrame()
+        raise Exception(pairs)
     
     # Quotes & Pairs
     final_pairs_quotes = scrape_quotes(pairs)
     if not isinstance(final_pairs_quotes, pd.DataFrame) or final_pairs_quotes.empty:
-        return pd.DataFrame()
+        raise Exception(final_pairs_quotes)
     return final_pairs_quotes
