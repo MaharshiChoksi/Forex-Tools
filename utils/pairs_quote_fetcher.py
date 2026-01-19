@@ -32,6 +32,8 @@ def scrape_quotes(pairs: pd.DataFrame):
             res = yf.Ticker(f"{_sym}=X").info
             if res:
                 temp_dict[_sym] = round(res['regularMarketPrice'], res['priceHint'])
+            else:
+                raise Exception(res)
             time.sleep(1)
 
         final_df = pd.DataFrame(temp_dict.items(), columns=["Pairs", "Quotes"])
