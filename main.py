@@ -53,8 +53,8 @@ with st.spinner("Fetching Pairs and Quotes..."):
         data = fetch_quotes()
 
     # if(data.isnull().all().any() or data is None or data.empty):
-      with tab_placeholder.container():
-        tab_names = ["Margin Calculator", "Position Size Calculator", "PNL Calculator", "Pip Value Calculator"]
+        with tab_placeholder.container():
+            tab_names = ["Margin Calculator", "Position Size Calculator", "PNL Calculator", "Pip Value Calculator"]
 
         # Use radio for persistent tab selection
         if "selected_tab" not in st.session_state:
